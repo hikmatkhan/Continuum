@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-
+# 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
 
 if __name__ == '__main__':
 
@@ -67,5 +67,3 @@ if __name__ == '__main__':
     print(m(rand_img).size())
 
     # -------------------------------------------------------------------------------------------------#
-    # Norm function
-    print("Norm of")
