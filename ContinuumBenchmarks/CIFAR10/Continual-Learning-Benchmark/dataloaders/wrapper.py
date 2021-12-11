@@ -10,7 +10,11 @@ class CacheClassLabel(data.Dataset):
     def __init__(self, dataset):
         super(CacheClassLabel, self).__init__()
         self.dataset = dataset
+        # set default value of labels vector to -1
         self.labels = torch.LongTensor(len(dataset)).fill_(-1)
+        # Labels will be saved as below
+        # <class "torchvision.dataets.cifar.CIFAR10">_50000.pth
+        # <class "torchvision.dataets.cifar.CIFAR10">_10000.pth
         label_cache_filename = path.join(dataset.root, str(type(dataset))+'_'+str(len(dataset))+'.pth')
         if path.exists(label_cache_filename):
             self.labels = torch.load(label_cache_filename)
@@ -63,6 +67,9 @@ class Subclass(data.Dataset):
         self.class_list = class_list
         self.remap = remap
         self.indices = []
+        # L1 = [0]
+        # L2 = [1, 2, 3]
+        # L1_Extended with L2 = [0, 1, 2, 3]
         for c in class_list:
             self.indices.extend((dataset.labels==c).nonzero().flatten().tolist())
         if remap:
@@ -73,7 +80,7 @@ class Subclass(data.Dataset):
 
     def __getitem__(self, index):
         # print(index)
-        img,target = self.dataset[self.indices[index]]
+        img, target = self.dataset[self.indices[index]]
         if self.remap:
             raw_target = target.item() if isinstance(target,torch.Tensor) else target
             target = self.class_mapping[raw_target]

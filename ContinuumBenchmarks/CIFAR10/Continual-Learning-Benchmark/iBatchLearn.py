@@ -26,11 +26,13 @@ def run(args):
                                                                           other_split_sz=args.other_split_size,
                                                                           rand_split=args.rand_split,
                                                                           remap_class=not args.no_class_remap)
+        # task_output_space = {'1': 2, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1, '9': 1}
 
     # Prepare the Agent (model)
     agent_config = {'lr': args.lr, 'momentum': args.momentum, 'weight_decay': args.weight_decay,'schedule': args.schedule,
                     'model_type':args.model_type, 'model_name': args.model_name, 'model_weights':args.model_weights,
                     'out_dim':{'All':args.force_out_dim} if args.force_out_dim>0 else task_output_space,
+                    # out_dim will either be equal to 1) {'All':2} , {'All':10} or {'All': task_output_space} in case of TIL
                     'optimizer':args.optimizer,
                     'print_freq':args.print_freq, 'gpuid': args.gpuid,
                     'reg_coef':args.reg_coef}
@@ -71,6 +73,7 @@ def run(args):
                                                       batch_size=args.batch_size, shuffle=False, num_workers=args.workers)
 
             if args.incremental_class:
+                # TODO Node for new classes should be added incrementally. Need to change add_valid_output_dim
                 agent.add_valid_output_dim(task_output_space[train_name])
 
             # Learn

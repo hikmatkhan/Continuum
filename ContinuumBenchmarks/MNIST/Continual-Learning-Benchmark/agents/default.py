@@ -65,10 +65,11 @@ class NormalNN(nn.Module):
         # The output of the model will be a dict: {task_name1:output1, task_name2:output2 ...}
         # For a single-headed model the output will be {'All':output}
         model.last = nn.ModuleDict()
-        for task,out_dim in cfg['out_dim'].items():
-            model.last[task] = nn.Linear(n_feat,out_dim)
+        for task, out_dim in cfg['out_dim'].items():
+            model.last[task] = nn.Linear(n_feat, out_dim)
 
         # Redefine the task-dependent function
+        # TODO Straight forward for CIL. Need to understand for TIL/DIL cases
         def new_logits(self, x):
             outputs = {}
             for task, func in self.last.items():
@@ -214,7 +215,7 @@ class NormalNN(nn.Module):
     def add_valid_output_dim(self, dim=0):
         # This function is kind of ad-hoc, but it is the simplest way to support incremental class learning
         self.log('Incremental class: Old valid output dimension:', self.valid_out_dim)
-        if self.valid_out_dim == 'ALL':
+        if self.valid_oout_dimut_dim == 'ALL':
             self.valid_out_dim = 0  # Initialize it with zero
         self.valid_out_dim += dim
         self.log('Incremental class: New Valid output dimension:', self.valid_out_dim)

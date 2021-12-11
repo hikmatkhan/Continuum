@@ -24,13 +24,18 @@ def SplitGen(train_dataset, val_dataset, first_split_sz=2, other_split_sz=2, ran
     while split_boundaries[-1]<num_classes:
         split_boundaries.append(split_boundaries[-1]+other_split_sz)
     print('split_boundaries:',split_boundaries)
+    # Below. split_boundaries[-1] will always be smaller than num_classes
     assert split_boundaries[-1]==num_classes,'Invalid split size'
 
     # Assign classes to each splits
     # Create the dict: {split_name1:[2,6,7], split_name2:[0,3,9], ...}
     if not rand_split:
+        # No shuffle
+        # class_lists will be like {'1': [0, 1], '2':[2], '3':[3], '4':[4], '5':[5], '6':[6], '7':[7], '8':[8],
+        # '9':[9]}
         class_lists = {str(i):list(range(split_boundaries[i-1],split_boundaries[i])) for i in range(1,len(split_boundaries))}
     else:
+        # Shuffle
         randseq = torch.randperm(num_classes)
         class_lists = {str(i):randseq[list(range(split_boundaries[i-1],split_boundaries[i]))].tolist() for i in range(1,len(split_boundaries))}
     print(class_lists)
@@ -40,7 +45,7 @@ def SplitGen(train_dataset, val_dataset, first_split_sz=2, other_split_sz=2, ran
     train_dataset_splits = {}
     val_dataset_splits = {}
     task_output_space = {}
-    for name,class_list in class_lists.items():
+    for name, class_list in class_lists.items():
         train_dataset_splits[name] = AppendName(Subclass(train_dataset, class_list, remap_class), name)
         val_dataset_splits[name] = AppendName(Subclass(val_dataset, class_list, remap_class), name)
         task_output_space[name] = len(class_list)
