@@ -23,7 +23,8 @@ class Naive_Rehearsal(NormalNN):
     def __init__(self, agent_config):
         super(Naive_Rehearsal, self).__init__(agent_config)
         self.task_count = 0
-        self.memory_size = 1000
+        self.memory_size =  1000
+        # print("Memory Buffer Size:", self.memory_size)
         self.task_memory = {}
         self.skip_memory_concatenation = False
 
@@ -51,28 +52,28 @@ class Naive_Rehearsal(NormalNN):
                 #       len(storage.dataset.dataset.dataset.labels))
                 # print("Class_List:",
                 #       storage.dataset.dataset.class_list)
-                lbl = []
-                import os
-
-                for i in storage.dataset.dataset.indices:#[27, 40, 51, 56, 70, 81, 83, 107, 128, 148, 156, 157, 167, 173, 177, 182, 183]:
-                    # print("I:", i)
-                    img, target = storage.dataset.dataset.dataset[i]
-                    img  = img.numpy()
-                    # print(img.shape)
-                    lbl.append(target)
-                    # print("Shape:", img.size())
-                    for f_lbl in set(lbl):
-                        if not os.path.exists("/home/hikmat/Desktop/CIFARIMAGES/{0}".format(f_lbl)):
-                            os.makedirs("/home/hikmat/Desktop/CIFARIMAGES/{0}".format(f_lbl))
-                    # Image.fromarray(img).save("/home/hikmat/Desktop/CIFARIMAGES/{0}/{1}.png".format(target,i))
-
-                    # plt.imsave("/home/hikmat/Desktop/CIFARIMAGES/{0}/{1}.png".format(target,i),
-                    #            np.transpose(np.reshape(img,(3, 32,32)), (1,2,0)))
-                    scipy.misc.imsave("/home/hikmat/Desktop/CIFARIMAGES/{0}/{1}.png".format(target,i),
-                                      img)
-                print("*" * 50)
-                print("LBL:", set(lbl))
-                print("*" * 50)
+                # lbl = []
+                # import os
+                #
+                # for i in storage.dataset.dataset.indices:#[27, 40, 51, 56, 70, 81, 83, 107, 128, 148, 156, 157, 167, 173, 177, 182, 183]:
+                #     # print("I:", i)
+                #     img, target = storage.dataset.dataset.dataset[i]
+                #     img  = img.numpy()
+                #     # print(img.shape)
+                #     lbl.append(target)
+                #     # print("Shape:", img.size())
+                #     for f_lbl in set(lbl):
+                #         if not os.path.exists("/home/hikmat/Desktop/CIFARIMAGES/{0}".format(f_lbl)):
+                #             os.makedirs("/home/hikmat/Desktop/CIFARIMAGES/{0}".format(f_lbl))
+                #     # Image.fromarray(img).save("/home/hikmat/Desktop/CIFARIMAGES/{0}/{1}.png".format(target,i))
+                #
+                #     # plt.imsave("/home/hikmat/Desktop/CIFARIMAGES/{0}/{1}.png".format(target,i),
+                #     #            np.transpose(np.reshape(img,(3, 32,32)), (1,2,0)))
+                #     scipy.misc.imsave("/home/hikmat/Desktop/CIFARIMAGES/{0}/{1}.png".format(target,i),
+                #                       img)
+                # print("*" * 50)
+                # print("LBL:", set(lbl))
+                # print("*" * 50)
                 # img, target, self.name = storage.dataset.dataset[[]]
                 # print("DS Indices:", storage.dataset.dataset.indices)
                 # self.dataset = dataset
@@ -100,7 +101,8 @@ class Naive_Rehearsal(NormalNN):
         # (c) Randomly choose some samples from new task and save them to the memory
         randind = torch.randperm(len(train_loader.dataset))[:num_sample_per_task]  # randomly sample some data
         self.task_memory[self.task_count] = Storage(train_loader.dataset, randind)
-        print("Task Memory Keys:", self.task_memory.keys(), " Count:", len(new_train_loader.dataset))
+        for key, value in self.task_memory.items():
+            print("Key:", key, " Value:", len(value), " New Train Loader:", len(new_train_loader))
 
 
 
@@ -121,6 +123,7 @@ class Naive_Rehearsal_EWC(Naive_Rehearsal, EWC):
     def __init__(self, agent_config):
         super(Naive_Rehearsal_EWC, self).__init__(agent_config)
         self.online_reg = True  # Online EWC
+
 
 
 class Naive_Rehearsal_MAS(Naive_Rehearsal, MAS):

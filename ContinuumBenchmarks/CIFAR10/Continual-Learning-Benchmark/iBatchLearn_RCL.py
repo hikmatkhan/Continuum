@@ -15,8 +15,14 @@ def run(args):
     if not os.path.exists('outputs'):
         os.mkdir('outputs')
 
-    # Prepare dataloaders
-    train_dataset, val_dataset = dataloaders.base.__dict__[args.dataset](args.dataroot, args.train_aug)
+    if args.is_robust_dataset:
+        # Prepare robust dataloaders
+        print("Loading {0}".format(args.rcl_dataset))
+        train_dataset, val_dataset = dataloaders.base.__dict__[args.rcl_dataset](args.robust_dataset_path,args.robust_dataset_name)
+    else:
+        # Prepare dataloaders
+        train_dataset, val_dataset = dataloaders.base.__dict__[args.dataset](args.dataroot, args.train_aug)
+
     if args.n_permutation>0:
         train_dataset_splits, val_dataset_splits, task_output_space = PermutedGen(train_dataset, val_dataset,
                                                                              args.n_permutation,
@@ -107,6 +113,7 @@ def get_args(argv):
     parser.add_argument('--optimizer', type=str, default='SGD', help="SGD|Adam|RMSprop|amsgrad|Adadelta|Adagrad|Adamax ...")
     parser.add_argument('--dataroot', type=str, default='data', help="The root folder of dataset or downloaded data")
     parser.add_argument('--dataset', type=str, default='CIFAR10', help="MNIST(default)|CIFAR10|CIFAR100")
+    parser.add_argument('--rcl_dataset', type=str, default='RCLCIFAR10', help="RCLMNIST(default)|RCLCIFAR10|RCLCIFAR100")
     parser.add_argument('--n_permutation', type=int, default=0, help="Enable permuted tests when >0")
     parser.add_argument('--first_split_size', type=int, default=2)
     parser.add_argument('--other_split_size', type=int, default=2)
@@ -119,13 +126,11 @@ def get_args(argv):
     parser.add_argument('--rand_split_order', dest='rand_split_order', default=False, action='store_true',
                         help="Randomize the order of splits")
     parser.add_argument('--workers', type=int, default=3, help="#Thread for dataloader")
-    parser.add_argument('--batch_size', type=int, default=100)
-    parser.add_argument('--seed', type=int, default=101)
-    # TODO. Make it sure for all the methods.
-    parser.add_argument('--memory-size', type=int, default=1000)
+    parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--lr', type=float, default=0.01, help="Learning rate")
     parser.add_argument('--momentum', type=float, default=0)
     parser.add_argument('--weight_decay', type=float, default=0)
+    parser.add_argument('--seed', type=int, default=101)
     parser.add_argument('--schedule', nargs="+", type=int, default=[2],
                         help="The list of epoch numbers to reduce learning rate by factor of 0.1. Last number is the end epoch")
     parser.add_argument('--print_freq', type=float, default=100, help="Print the log at every x iteration")
@@ -139,13 +144,19 @@ def get_args(argv):
     parser.add_argument('--repeat', type=int, default=1, help="Repeat the experiment N times")
     parser.add_argument('--incremental_class', dest='incremental_class', default=False, action='store_true',
                         help="The number of output node in the single-headed model increases along with new categories.")
+    #RCL Arguments
+    parser.add_argument('--is-robust-dataset', type=int, default=0)
+    parser.add_argument('--robust-dataset-path', type=str,
+                        default="/home/hikmat/Desktop/JWorkspace/CL/RCL/PY_CIFAR/datasets/release_datasets")
+    parser.add_argument('--robust-dataset-name', type=str, default='d_robust_CIFAR',
+                        help="d_robust_CIFAR(default)|ddet_CIFAR|drand_CIFAR|d_non_robust_CIFAR")
+
     args = parser.parse_args(argv)
     return args
 
-
 def fix_seeds(seed=101):
-    print("SEED:", seed)
     # No randomization
+    print("SEED:", seed)
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -161,7 +172,7 @@ def fix_seeds(seed=101):
 # CL_CIFAR_PATH = "{0}{1}".format(CL_CIFAR_PATH, SCENARIO)
 if __name__ == '__main__':
     args = get_args(sys.argv[1:])
-
+    # fix_seeds(seed=args.seed)
     reg_coef_list = args.reg_coef
     avg_final_acc = {}
 

@@ -1,5 +1,10 @@
 import time
+from random import random
+
+import numpy as np
 import torch
+
+
 
 def accuracy(output, target, topk=(1,)):
     """Computes the precision@k for the specified values of k"""
@@ -14,9 +19,9 @@ def accuracy(output, target, topk=(1,)):
         res = []
         for k in topk:
             correct_k = correct[:k].view(-1).float().sum().item()
-            res.append(correct_k*100.0 / batch_size)
+            res.append(correct_k * 100.0 / batch_size)
 
-        if len(res)==1:
+        if len(res) == 1:
             return res[0]
         else:
             return res

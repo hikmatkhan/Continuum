@@ -139,6 +139,8 @@ class NormalNN(nn.Module):
             pred = preds['All']
             if isinstance(self.valid_out_dim, int):  # (Not 'ALL') Mask out the outputs of unseen classes for incremental class scenario
                 pred = preds['All'][:,:self.valid_out_dim]
+            # print("Pred:", pred, " ", pred.size())
+            # print("Targets:", targets, " ", targets.size())
             loss = self.criterion_fn(pred, targets)
         return loss
 
@@ -177,7 +179,7 @@ class NormalNN(nn.Module):
             for i, (input, target, task) in enumerate(train_loader):
 
                 data_time.update(data_timer.toc())  # measure data loading time
-
+                # print("Input:", input.size())
                 if self.gpu:
                     input = input.cuda()
                     target = target.cuda()

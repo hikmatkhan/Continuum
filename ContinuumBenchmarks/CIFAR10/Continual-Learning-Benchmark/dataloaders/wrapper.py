@@ -15,13 +15,13 @@ class CacheClassLabel(data.Dataset):
         # Labels will be saved as below
         # <class "torchvision.dataets.cifar.CIFAR10">_50000.pth
         # <class "torchvision.dataets.cifar.CIFAR10">_10000.pth
-        label_cache_filename = path.join(dataset.root, str(type(dataset))+'_'+str(len(dataset))+'.pth')
-        if path.exists(label_cache_filename):
-            self.labels = torch.load(label_cache_filename)
-        else:
-            for i, data in enumerate(dataset):
-                self.labels[i] = data[1]
-            torch.save(self.labels, label_cache_filename)
+        # label_cache_filename = path.join(dataset.root, str(type(dataset))+'_'+str(len(dataset))+'.pth')
+        # if path.exists(label_cache_filename):
+        #     self.labels = torch.load(label_cache_filename)
+        # else:
+        for i, data in enumerate(dataset):
+            self.labels[i] = data[1]
+            # torch.save(self.labels, label_cache_filename)
         self.number_classes = len(torch.unique(self.labels))
 
     def __len__(self):
