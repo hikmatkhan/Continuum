@@ -1,8 +1,8 @@
 
 # repo-specific stuff
 data/
-outputs/
-*.pt
+#outputs/
+#*.pt
 \#*#
 .idea
 *.sublime-*

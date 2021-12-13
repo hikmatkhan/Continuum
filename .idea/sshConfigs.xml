@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="lambda01.rowan.edu" id="0500cffc-6838-492f-8870-fbd51e52f1df" port="22" customName="Continuum" nameFormat="CUSTOM" username="khanhi83">
+        <option name="customName" value="Continuum" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>
