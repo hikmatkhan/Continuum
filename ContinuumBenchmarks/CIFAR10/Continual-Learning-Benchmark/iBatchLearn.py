@@ -9,6 +9,11 @@ from collections import OrderedDict
 import dataloaders.base
 from dataloaders.datasetGen import SplitGen, PermutedGen
 import agents
+import os
+# This is not needed. We have already set the GPUID in .sh file.
+# os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+# # For multiple devices (GPUs: 4, 5, 6, 7)
+# os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 
 
 def run(args):

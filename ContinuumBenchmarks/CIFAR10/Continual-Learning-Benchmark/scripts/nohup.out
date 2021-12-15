@@ -1,0 +1,27 @@
+
+Bad key "text.kerning_factor" on line 4 in
+/home/khanhi83/anaconda3/envs/PY3/lib/python3.7/site-packages/matplotlib/mpl-data/stylelib/_classic_test_patch.mplstyle.
+You probably need to get an updated matplotlibrc file from
+https://github.com/matplotlib/matplotlib/blob/v3.1.3/matplotlibrc.template
+or from the matplotlib source distribution
+SEED: 0
+Using downloaded and verified file: data/cifar-10-python.tar.gz
+Extracting data/cifar-10-python.tar.gz to data
+Traceback (most recent call last):
+  File "/home/khanhi83/JWorkspace/Continuum/ContinuumBenchmarks/ContinuumBenchmarks/CIFAR10/Continual-Learning-Benchmark/iBatchLearn.py", line 176, in <module>
+    acc_table, task_names = run(args)
+  File "/home/khanhi83/JWorkspace/Continuum/ContinuumBenchmarks/ContinuumBenchmarks/CIFAR10/Continual-Learning-Benchmark/iBatchLearn.py", line 18, in run
+    train_dataset, val_dataset = dataloaders.base.__dict__[args.dataset](args.dataroot, args.train_aug)
+  File "/home/khanhi83/JWorkspace/Continuum/ContinuumBenchmarks/ContinuumBenchmarks/CIFAR10/Continual-Learning-Benchmark/dataloaders/base.py", line 124, in CIFAR10
+    train_dataset = CacheClassLabel(train_dataset)
+  File "/home/khanhi83/JWorkspace/Continuum/ContinuumBenchmarks/ContinuumBenchmarks/CIFAR10/Continual-Learning-Benchmark/dataloaders/wrapper.py", line 22, in __init__
+    for i, data in enumerate(dataset):
+  File "/home/khanhi83/anaconda3/envs/PY3/lib/python3.7/site-packages/torchvision/datasets/cifar.py", line 120, in __getitem__
+    img = self.transform(img)
+  File "/home/khanhi83/anaconda3/envs/PY3/lib/python3.7/site-packages/torchvision/transforms/transforms.py", line 67, in __call__
+    img = t(img)
+  File "/home/khanhi83/anaconda3/envs/PY3/lib/python3.7/site-packages/torchvision/transforms/transforms.py", line 104, in __call__
+    return F.to_tensor(pic)
+  File "/home/khanhi83/anaconda3/envs/PY3/lib/python3.7/site-packages/torchvision/transforms/functional.py", line 69, in to_tensor
+    if isinstance(pic, np.ndarray):
+KeyboardInterrupt

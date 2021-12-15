@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="b895d779-a270-4c74-96c7-53a966c0f365" name="Continuum">
-        <fileTransfer rootFolder="/home/khanhi83/JWorkspace/Continuum" accessType="SFTP" host="lambda01.rowan.edu" port="22" sshConfigId="0500cffc-6838-492f-8870-fbd51e52f1df" sshConfig="Continuum">
+        <fileTransfer rootFolder="/home/khanhi83" accessType="SFTP" host="lambda01.rowan.edu" port="22" sshConfigId="0500cffc-6838-492f-8870-fbd51e52f1df" sshConfig="Continuum">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
